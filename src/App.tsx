@@ -1,35 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [Todoz, setTodoz] = useState<string[]>([]);
+  const [toDo, setToDo] = useState("");
+  const [duplicateMesssage, setDuplicateMessage] = useState<string | null>(
+    null
+  );
 
+  const handleAddClick = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (toDo.trim() === "") return;
+    const toDoExists = Todoz.some(
+      (todo) => todo.toLowerCase() === toDo.toLowerCase()
+    );
+    if (!toDoExists) {
+      setTodoz((recent) => [...recent, toDo]);
+      setToDo("");
+    } else {
+      setDuplicateMessage("ToDo already exists!");
+    }
+  };
+
+  useEffect(() => {
+    if (duplicateMesssage) {
+      const timer = setTimeout(() => {
+        setDuplicateMessage(null);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [duplicateMesssage]);
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <main>
+      <form action="">
+        <input
+          type="text"
+          value={toDo}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setToDo(e.target.value)
+          }
+        />
+        <button onClick={handleAddClick}>add</button>
+        {duplicateMesssage && <p>{duplicateMesssage}</p>}
+      </form>
+
+      <div className="to-do-list">
+        {Todoz.map((todo, index) => (
+          <div key={index}>{todo} </div>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </main>
+  );
 }
 
-export default App
+export default App;
