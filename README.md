@@ -9,7 +9,7 @@ A simple yet functional Todo List application built with React. Manage your dail
 - **Filter tasks**: View all, active, or completed tasks.  
 - **Local Storage**: Todos persist even after refreshing the page.  
 
-## 🔧 Technologies Used  
+## 🔧 Technologies Used .  
 - **Frontend**: React (JavaScript, JSX, CSS)  
 - **State Management**: React Hooks (`useState`, `useEffect`)  
 - **Storage**: Browser’s LocalStorage API  
